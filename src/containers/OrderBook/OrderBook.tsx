@@ -12,6 +12,7 @@ import { AsksTable } from "./components/AsksTable";
 import { BidsTable } from "./components/BidsTable";
 
 const OrderBook = () => {
+  const [isSubscribed, setSubscribed] = useState(false);
   const { socket } = useContext(SocketContext);
   const { asks, bids, highestBid, lowestAsk, parseData, clearData } =
     useBookData();
@@ -37,6 +38,7 @@ const OrderBook = () => {
 
   const unsubscribe = () => {
     if (socket && socket.readyState === WebSocket.OPEN) {
+      setSubscribed(false);
       socket.send(
         JSON.stringify(
           buildOpenMessage(FeedEvent.UNSUBSCRIBE, FeedTypes.BOOK, [
@@ -49,6 +51,7 @@ const OrderBook = () => {
 
   const subscribe = useCallback(() => {
     if (socket && socket.readyState === WebSocket.OPEN) {
+      setSubscribed(true);
       socket.send(
         JSON.stringify(
           buildOpenMessage(FeedEvent.SUBSCRIBE, FeedTypes.BOOK, [contractType])
@@ -77,8 +80,7 @@ const OrderBook = () => {
     () => () => {
       socket?.removeEventListener("message", handleMessage);
       unsubscribe();
-      // eslint-disable-next-line
-    },
+    }, // eslint-disable-next-line
     []
   );
 
@@ -88,8 +90,12 @@ const OrderBook = () => {
       <div className={styles.topSection}>
         <div className={styles.actionButtons}>
           <button onClick={handleContractToggle}>Toggle Feed</button>
-          <button onClick={subscribe}>Subscribe</button>
-          <button onClick={unsubscribe}>Unsubscribe</button>
+          <button disabled={isSubscribed} onClick={subscribe}>
+            Start updating
+          </button>
+          <button disabled={!isSubscribed} onClick={unsubscribe}>
+            Stop updating
+          </button>
         </div>
         <span>Spread: {formatNumber(highestBid - lowestAsk)}</span>
       </div>

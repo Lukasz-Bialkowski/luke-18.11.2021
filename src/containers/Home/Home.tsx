@@ -1,10 +1,6 @@
 const Home = () => (
   <div>
-    <h1>Orderbook UI Test - Brief</h1>
-    <p>
-      Thank you for giving me a chance to fill the requirement of the given
-      task.
-    </p>
+    <h1>Minimalistic Order book</h1>
     <p>
       The current implementation definitely requires additional refactoring,
       unfortunately my time to complete the task has just ended. I want to be

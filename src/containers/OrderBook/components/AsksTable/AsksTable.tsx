@@ -8,6 +8,9 @@ const AsksTable = ({ asks }: AsksTableProps) => {
     <table className={styles.asks}>
       <thead>
         <tr>
+          <th colSpan={3}>ASKS</th>
+        </tr>
+        <tr>
           <th>PRICE</th>
           <th>SIZE</th>
           <th>TOTAL</th>

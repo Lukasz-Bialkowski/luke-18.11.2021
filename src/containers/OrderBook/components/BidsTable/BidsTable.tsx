@@ -8,6 +8,9 @@ const BidsTable = ({ bids }: BidsTableProps) => {
     <table className={styles.bids}>
       <thead>
         <tr>
+          <th colSpan={3}>BIDS</th>
+        </tr>
+        <tr>
           <th>TOTAL</th>
           <th>SIZE</th>
           <th>PRICE</th>
