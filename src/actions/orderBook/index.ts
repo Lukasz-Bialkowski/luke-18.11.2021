@@ -1,2 +1,2 @@
-export {changeContractType} from './changeContractType';
-export {changeViewState} from './changeViewState';
+export { changeContractType } from "./changeContractType";
+export { changeViewState } from "./changeViewState";

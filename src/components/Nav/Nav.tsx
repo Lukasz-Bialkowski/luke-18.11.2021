@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom"
-import { HOME_ROUTE, ORDER_BOOK_ROUTE } from "../../constants/routes"
+import { Link } from "react-router-dom";
+import { HOME_ROUTE, ORDER_BOOK_ROUTE } from "../../constants/routes";
 
-import styles from './Nav.module.css';
+import styles from "./Nav.module.css";
 
 const Nav = () => {
   return (
@@ -15,9 +15,7 @@ const Nav = () => {
         </li>
       </ul>
     </nav>
-  )
-}
+  );
+};
 
-export {
-  Nav
-}
+export { Nav };

@@ -1,6 +1,6 @@
 import { formatNumber } from "../../../../utils/formatNumber";
 
-import styles from './AsksTable.module.css';
+import styles from "./AsksTable.module.css";
 import { AsksTableProps } from "./AsksTableProps";
 
 const AsksTable = ({ asks }: AsksTableProps) => {
@@ -22,10 +22,8 @@ const AsksTable = ({ asks }: AsksTableProps) => {
           </tr>
         ))}
       </tbody>
-  </table>
+    </table>
   );
-}
+};
 
-export {
-  AsksTable
-}
+export { AsksTable };

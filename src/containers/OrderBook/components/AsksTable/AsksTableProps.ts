@@ -1,3 +1,3 @@
 export type AsksTableProps = {
-  asks: [[number, number, number]] | []
-}
+  asks: [[number, number, number]] | [];
+};

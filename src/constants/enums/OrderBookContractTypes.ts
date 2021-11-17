@@ -1,4 +1,4 @@
 export enum OrderBookContractType {
-  ETH = 'PI_ETHUSD',
-  XBT = 'PI_XBTUSD'
+  ETH = "PI_ETHUSD",
+  XBT = "PI_XBTUSD",
 }

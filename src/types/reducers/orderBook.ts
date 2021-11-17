@@ -2,9 +2,9 @@ import { OrderBookContractType } from "../../constants/enums/OrderBookContractTy
 
 export type OrderBookViewConfig = {
   active: boolean;
-}
+};
 
 export type OrderBookReducer = {
-  viewConfig: OrderBookViewConfig,
-  contractType: OrderBookContractType,
-}
+  viewConfig: OrderBookViewConfig;
+  contractType: OrderBookContractType;
+};

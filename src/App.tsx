@@ -16,9 +16,7 @@ const App = () => (
         <Nav />
         <Routes>
           <Route path={HOME_ROUTE} element={<Home />} />
-          <Route
-            path={ORDER_BOOK_ROUTE}
-            element={<OrderBook />}/>
+          <Route path={ORDER_BOOK_ROUTE} element={<OrderBook />} />
         </Routes>
       </Layout>
     </SocketProvider>

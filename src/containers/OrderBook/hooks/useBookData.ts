@@ -2,8 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import { useThrottle } from "rooks";
 
 const useBookData = () => {
-  const [asks, setAsks] = useState<Map<number, Array<number> | number>>(new Map());
-  const [bids, setBids] = useState<Map<number, Array<number> | number>>(new Map());
+  const [asks, setAsks] = useState<Map<number, Array<number> | number>>(
+    new Map()
+  );
+  const [bids, setBids] = useState<Map<number, Array<number> | number>>(
+    new Map()
+  );
   const [asksArr, setAsksArr] = useState<[[number, number, number]] | []>([]);
   const [bidsArr, setBidsArr] = useState<[[number, number, number]] | []>([]);
   const [highestBid, setHighestBid] = useState(0);
@@ -18,7 +22,7 @@ const useBookData = () => {
 
   const prepareAsksForRender = () => {
     const sortedAsks = new Map([...asks].sort());
-          
+
     const tempArr: any = [];
     let lowest: any = +Infinity;
     let sum = 0;
@@ -26,7 +30,7 @@ const useBookData = () => {
     for (let [key, value] of sortedAsks) {
       if (value !== 0) {
         sum += value as number;
-        tempArr.push([key, value, sum])
+        tempArr.push([key, value, sum]);
 
         if (lowest > key) {
           lowest = key;
@@ -36,19 +40,19 @@ const useBookData = () => {
 
     setLowestAsk(lowest);
     setAsksArr(tempArr);
-  } 
+  };
 
   const prepareBidsForRender = () => {
     const sortedBids = new Map([...bids].sort((a, b) => (a > b ? -1 : 1)));
-          
-    const tempArr: any = []
+
+    const tempArr: any = [];
     let sum = 0;
     let highest = 0;
 
     for (let [key, value] of sortedBids) {
       if (value !== 0) {
         sum += value as number;
-        tempArr.push([key, value, sum])
+        tempArr.push([key, value, sum]);
 
         if (highest < key) {
           highest = key as number;
@@ -58,7 +62,7 @@ const useBookData = () => {
 
     setHighestBid(highest);
     setBidsArr(tempArr);
-  } 
+  };
 
   const [throttledFunctionAsks] = useThrottle(prepareAsksForRender, 500);
   const [throttledFunctionBids] = useThrottle(prepareBidsForRender, 500);
@@ -72,18 +76,20 @@ const useBookData = () => {
     console.log(message);
     try {
       const jsonMessage = JSON.parse(message.data);
-      const { bids: newBids, asks: newAsks }: { bids: [[number, number]], asks: [[number, number]]} = jsonMessage;
+      const {
+        bids: newBids,
+        asks: newAsks,
+      }: { bids: [[number, number]]; asks: [[number, number]] } = jsonMessage;
 
       if (newAsks) {
-        setAsks(oldAsks => new Map([...oldAsks, ...newAsks]));
+        setAsks((oldAsks) => new Map([...oldAsks, ...newAsks]));
       }
 
       if (newBids) {
-        setBids(oldBids => new Map([...oldBids, ...newBids]));
+        setBids((oldBids) => new Map([...oldBids, ...newBids]));
       }
-   
     } catch (err) {
-      console.log('Parsing error', err);
+      console.log("Parsing error", err);
     }
   }, []);
 
@@ -94,9 +100,7 @@ const useBookData = () => {
     lowestAsk: lowestAsk,
     parseData,
     clearData,
-  }
+  };
 };
 
-export {
-  useBookData,
-}
+export { useBookData };

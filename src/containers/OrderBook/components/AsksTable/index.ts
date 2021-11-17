@@ -1,1 +1,1 @@
-export {AsksTable} from './AsksTable';
+export { AsksTable } from "./AsksTable";

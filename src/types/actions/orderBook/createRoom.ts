@@ -4,6 +4,6 @@ import { OrderBookContractType } from "../../../constants/enums/OrderBookContrac
 export type ChangeContractTypeAction = {
   type: typeof CHANGE_CONTRACT_TYPE;
   payload: {
-    contractType: OrderBookContractType
+    contractType: OrderBookContractType;
   };
-}
+};

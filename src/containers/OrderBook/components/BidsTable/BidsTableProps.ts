@@ -1,3 +1,3 @@
 export type BidsTableProps = {
-  bids: [[number, number, number]] | []
-}
+  bids: [[number, number, number]] | [];
+};
