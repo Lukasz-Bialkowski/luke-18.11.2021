@@ -73,7 +73,6 @@ const useBookData = () => {
   }, [asks, bids, throttledFunctionAsks, throttledFunctionBids]);
 
   const parseData = useCallback((message: any) => {
-    console.log(message);
     try {
       const jsonMessage = JSON.parse(message.data);
       const {
