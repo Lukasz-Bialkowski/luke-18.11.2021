@@ -1,5 +1,5 @@
 import { createContext, ReactChild, ReactChildren, useEffect, useRef } from 'react'
-import {ORDER_BOOK_WS_API_URL} from './config';
+import {ORDER_BOOK_WS_API_URL} from '../constants/config';
 
 export interface CustomWebSocket {
     socket: WebSocket | null;
@@ -13,7 +13,6 @@ interface SocketProviderProps {
 
 const SocketProvider = ({ children }: SocketProviderProps) => {
     const socket = useRef<WebSocket | null>(new WebSocket(ORDER_BOOK_WS_API_URL));
-  
     useEffect(() => {
         const currectSocket = socket.current;
         return () => {

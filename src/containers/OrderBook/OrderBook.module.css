@@ -1,0 +1,17 @@
+.orderBook {
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+}
+
+.topSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.tableWrapper {
+  display: flex;
+  align-items: flex-start;
+}

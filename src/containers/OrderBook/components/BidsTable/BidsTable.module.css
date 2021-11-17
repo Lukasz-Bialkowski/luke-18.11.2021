@@ -1,0 +1,7 @@
+.bids {
+  flex: 1;
+}
+
+tbody tr td {
+  text-align: right;
+}
