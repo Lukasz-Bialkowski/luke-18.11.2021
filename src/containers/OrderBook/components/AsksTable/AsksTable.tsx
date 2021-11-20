@@ -3,7 +3,7 @@ import { formatNumber } from "../../../../utils/formatNumber";
 import styles from "./AsksTable.module.css";
 import { AsksTableProps } from "./AsksTableProps";
 
-const AsksTable = ({ asks }: AsksTableProps) => {
+const AsksTable = ({ asks, highestTotal }: AsksTableProps) => {
   return (
     <table className={styles.asks}>
       <thead>
@@ -19,7 +19,7 @@ const AsksTable = ({ asks }: AsksTableProps) => {
       <tbody>
         {asks.map(([price, size, total]) => (
           <tr key={price}>
-            <td>{formatNumber(price, { minimumFractionDigits: 2 })}</td>
+            <td className={styles.price}>{formatNumber(price, { minimumFractionDigits: 2 })}</td>
             <td>{formatNumber(size)}</td>
             <td>{formatNumber(total)}</td>
           </tr>

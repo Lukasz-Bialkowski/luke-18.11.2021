@@ -5,3 +5,7 @@
 tbody tr td {
   text-align: right;
 }
+
+.price {
+  color: var(--accent-colour);
+}

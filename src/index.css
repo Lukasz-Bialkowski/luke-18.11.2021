@@ -1,0 +1,21 @@
+:root {
+  --warn-colour: #ff5a6a;
+  --accent-colour: #29baa5;
+  --typeface: "IBM Plex Sans",sans-serif;
+}
+
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: rgb(16, 25, 29);
+  color: white;
+  font-family: var(--typeface);
+}
+
+* {
+  box-sizing: border-box;
+}

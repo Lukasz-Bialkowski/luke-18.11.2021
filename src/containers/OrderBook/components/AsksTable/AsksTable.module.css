@@ -17,3 +17,7 @@ tr:nth-child(even) {
 tr:hover {
   background-color: #ddd;
 }
+
+.price {
+  color: var(--warn-colour);
+}

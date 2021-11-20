@@ -1,4 +1,4 @@
-import { OrderBookContractType } from "../../constants/enums/OrderBookContractTypes";
+import { ContractType } from "../../constants/enums/OrderBookContractTypes";
 
 export enum FeedEvent {
   SUBSCRIBE = "subscribe",
@@ -12,13 +12,13 @@ export enum FeedTypes {
 export type FeedWelcomeMessage = {
   event: FeedEvent;
   feed: FeedTypes;
-  product_ids: OrderBookContractType[];
+  product_ids: ContractType[];
 };
 
 export const buildOpenMessage = (
   event: FeedEvent,
   feed: FeedTypes,
-  productIds: OrderBookContractType[]
+  productIds: ContractType[]
 ): FeedWelcomeMessage => ({
   event,
   feed,

@@ -1,18 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import { useThrottle } from "rooks";
 
+const asksBusket = new Map<number, Array<number> | number>();
+const bidsBusket = new Map<number, Array<number> | number>();
+
 const useBookData = () => {
-  const [asks, setAsks] = useState<Map<number, Array<number> | number>>(
-    new Map()
-  );
-  const [bids, setBids] = useState<Map<number, Array<number> | number>>(
-    new Map()
-  );
-  const [asksArr, setAsksArr] = useState<[[number, number, number]] | []>([]);
-  const [bidsArr, setBidsArr] = useState<[[number, number, number]] | []>([]);
+  const [asks, setAsks] = useState<[[number, number, number]] | []>([]);
+  const [bids, setBids] = useState<[[number, number, number]] | []>([]);
   const [highestBid, setHighestBid] = useState(0);
   const [lowestAsk, setLowestAsk] = useState(0);
-
+  const [highestTotal, setHighestTotal] = useState(0);
 
   const parseData = useCallback((message: any) => {
     try {
@@ -23,68 +20,83 @@ const useBookData = () => {
       }: { bids: [[number, number]]; asks: [[number, number]] } = jsonMessage;
 
       if (newAsks) {
-        setAsks((oldAsks) => new Map([...oldAsks, ...newAsks]));
+        for(let [key, value] of newAsks) {
+          asksBusket.set(key, value);
+        }
       }
 
       if (newBids) {
-        setBids((oldBids) => new Map([...oldBids, ...newBids]));
+        for(let [key, value] of newBids) {
+          bidsBusket.set(key, value);
+        }
       }
+
     } catch (err) {
       console.log("Parsing error", err);
     }
   }, []);
 
   const clearData = useCallback(() => {
-    setAsks(new Map());
-    setBids(new Map());
-    setAsksArr([]);
-    setBidsArr([]);
+    asksBusket.clear();
+    bidsBusket.clear();
+    setAsks([]);
+    setBids([]);
     setHighestBid(0);
     setLowestAsk(0);
   }, []);
 
   const prepareAsksForRender = () => {
-    const sortedAsks = new Map([...asks].sort());
+    const sortedAsks = new Map([...asksBusket].sort());
 
     const asksArr: any = [];
     let lowestPrice: any = +Infinity;
+    let highestTotal = -Infinity;
     let total = 0;
 
-    for (let [price, count] of sortedAsks) {
-      if (count !== 0) {
-        total += count as number;
-        asksArr.push([price, count, total]);
+    for (let [price, size] of sortedAsks) {
+      if (size !== 0) {
+        total += size as number;
+        asksArr.push([price, size, total]);
 
         if (lowestPrice > price) {
           lowestPrice = price;
+        }
+        if (total > highestTotal) {
+          highestTotal = total as number;
         }
       }
     }
 
     setLowestAsk(lowestPrice);
-    setAsksArr(asksArr);
+    setAsks(asksArr);
+    setHighestTotal(currentHighestTotal => (currentHighestTotal < highestTotal) ? highestTotal : currentHighestTotal);
   };
 
   const prepareBidsForRender = () => {
-    const sortedBids = new Map([...bids].sort((a, b) => (a > b ? -1 : 1)));
+    const sortedBids = new Map([...bidsBusket].sort((a, b) => (a > b ? -1 : 1)));
 
     const bidsArr: any = [];
+    let highestPrice = -Infinity;
+    let highestTotal = -Infinity;
     let total = 0;
-    let highestPrice = 0;
 
-    for (let [price, count] of sortedBids) {
-      if (count !== 0) {
-        total += count as number;
-        bidsArr.push([price, count, total]);
+    for (let [price, size] of sortedBids) {
+      if (size !== 0) {
+        total += size as number;
+        bidsArr.push([price, size, total]);
 
         if (highestPrice < price) {
           highestPrice = price as number;
+        }
+        if (total > highestTotal) {
+          highestTotal = total as number;
         }
       }
     }
 
     setHighestBid(highestPrice);
-    setBidsArr(bidsArr);
+    setBids(bidsArr);
+    setHighestTotal(currentHighestTotal => (currentHighestTotal < highestTotal) ? highestTotal : currentHighestTotal);
   };
 
   const [throttledFunctionAsks] = useThrottle(prepareAsksForRender, 1000);
@@ -93,13 +105,14 @@ const useBookData = () => {
   useEffect(() => {
     throttledFunctionAsks();
     throttledFunctionBids();
-  }, [asks, bids, throttledFunctionAsks, throttledFunctionBids]);
+  }, [throttledFunctionAsks, throttledFunctionBids]);
 
   return {
-    asks: asksArr,
-    bids: bidsArr,
-    highestBid: highestBid,
-    lowestAsk: lowestAsk,
+    asks,
+    bids,
+    highestTotal,
+    highestBid,
+    lowestAsk,
     parseData,
     clearData,
   };
