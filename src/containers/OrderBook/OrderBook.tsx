@@ -1,26 +1,24 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 
 import { buildOpenMessage, FeedEvent, FeedTypes } from "./OrderBookProps";
-
-import { OrderBookContractType } from "../../constants/enums/OrderBookContractTypes";
-import { SocketContext } from "../../context/WebSocket";
+import { ContractType } from "../../constants/enums/OrderBookContractTypes";
+import { OrderBookContext } from "../../context/WebSocket";
 import { useBookData } from "./hooks/useBookData";
-
-import styles from "./OrderBook.module.css";
 import { formatNumber } from "../../utils/formatNumber";
 import { AsksTable } from "./components/AsksTable";
 import { BidsTable } from "./components/BidsTable";
+import styles from "./OrderBook.module.css";
+
 
 const OrderBook = () => {
   const [isSubscribed, setSubscribed] = useState(false);
-  const { socket } = useContext(SocketContext);
+  const [contract, setContract] = useState<ContractType>(ContractType.XBT);
+
+  const { ws } = useContext(OrderBookContext);
   const { asks, bids, highestBid, lowestAsk, parseData, clearData } =
     useBookData();
-  const [contractType, setContractType] = useState<OrderBookContractType>(
-    OrderBookContractType.XBT
-  );
 
-  const handleMessage = useCallback(
+  const onMessage = useCallback(
     (message: Event) => {
       parseData(message);
     },
@@ -28,68 +26,60 @@ const OrderBook = () => {
   );
 
   useEffect(() => {
-    if (socket) {
-      socket.addEventListener("message", handleMessage);
-      socket.addEventListener("close", () => {
-        socket?.removeEventListener("message", handleMessage);
-      });
-    }
-  }, [socket, handleMessage]);
+    ws?.addEventListener("message", onMessage);
 
-  const unsubscribe = () => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
+    return () => {
+      unsubscribe();
+      ws?.removeEventListener("message", onMessage);
+    }
+  }, [ws]);
+
+  const unsubscribe = useCallback(() => {
+    if (ws?.readyState === WebSocket.OPEN) {
       setSubscribed(false);
-      socket.send(
+      ws.send(
         JSON.stringify(
           buildOpenMessage(FeedEvent.UNSUBSCRIBE, FeedTypes.BOOK, [
-            contractType,
+            contract,
           ])
         )
       );
     }
-  };
+  }, [ws, contract]);
 
   const subscribe = useCallback(() => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
+    if (ws?.readyState === WebSocket.OPEN) {
       setSubscribed(true);
-      socket.send(
+      ws.send(
         JSON.stringify(
-          buildOpenMessage(FeedEvent.SUBSCRIBE, FeedTypes.BOOK, [contractType])
+          buildOpenMessage(FeedEvent.SUBSCRIBE, FeedTypes.BOOK, [contract])
         )
       );
     }
-  }, [socket, contractType]);
+  }, [ws, contract]);
 
   useEffect(() => {
-    if (socket && socket.readyState === WebSocket.OPEN) {
+    if (ws && ws.readyState === WebSocket.OPEN) {
       subscribe();
     }
-  }, [socket, contractType, subscribe]);
+  }, [ws, contract, subscribe]);
 
-  const handleContractToggle = () => {
+  const changeContract = () => {
     clearData();
     unsubscribe();
-    setContractType((type) =>
-      type === OrderBookContractType.ETH
-        ? OrderBookContractType.XBT
-        : OrderBookContractType.ETH
+    setContract((type) =>
+      type === ContractType.ETH
+        ? ContractType.XBT
+        : ContractType.ETH
     );
   };
 
-  useEffect(
-    () => () => {
-      socket?.removeEventListener("message", handleMessage);
-      unsubscribe();
-    }, // eslint-disable-next-line
-    []
-  );
-
   return (
     <div className={styles.orderBook}>
-      <h1>Order book ({contractType})</h1>
+      <h1>Order book ({contract})</h1>
       <div className={styles.topSection}>
         <div className={styles.actionButtons}>
-          <button onClick={handleContractToggle}>Toggle Feed</button>
+          <button onClick={changeContract}>Toggle Feed</button>
           <button disabled={isSubscribed} onClick={subscribe}>
             Start updating
           </button>

@@ -8,31 +8,35 @@ import {
 import { ORDER_BOOK_WS_API_URL } from "../constants/config";
 
 export interface CustomWebSocket {
-  socket: WebSocket | null;
+  ws: WebSocket | null;
 }
 
-const SocketContext = createContext<CustomWebSocket>({ socket: null });
+const OrderBookContext = createContext<CustomWebSocket>({ ws: null });
 
 interface SocketProviderProps {
   children: ReactChild | ReactChild[] | ReactChildren | ReactChildren[];
 }
 
 const SocketProvider = ({ children }: SocketProviderProps) => {
-  const socket = useRef<WebSocket | null>(new WebSocket(ORDER_BOOK_WS_API_URL));
+  const ws = useRef<WebSocket | null>(new WebSocket(ORDER_BOOK_WS_API_URL));
+
   useEffect(() => {
-    const currectSocket = socket.current;
+    const currectSocket = ws.current;
+    currectSocket?.addEventListener("close", () => {
+      ws.current = new WebSocket(ORDER_BOOK_WS_API_URL);
+    })
     return () => {
       if (currectSocket) {
         currectSocket.close();
       }
     };
-  }, []);
+  }, [ws]);
 
   return (
-    <SocketContext.Provider value={{ socket: socket.current }}>
+    <OrderBookContext.Provider value={{ ws: ws.current }}>
       {children}
-    </SocketContext.Provider>
+    </OrderBookContext.Provider>
   );
 };
 
-export { SocketProvider, SocketContext };
+export { SocketProvider, OrderBookContext };
