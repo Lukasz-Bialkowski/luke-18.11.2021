@@ -1,6 +1,6 @@
 :root {
-  --warn-colour: #ff5a6a;
-  --accent-colour: #29baa5;
+  --red: #ff5a6a;
+  --green: #29baa5;
   --primary-button-color: rgb(179, 91, 212);
   --secondary-button-color: rgb(20, 112, 154);
   --disabled-button-color: rgb(54, 133, 170);

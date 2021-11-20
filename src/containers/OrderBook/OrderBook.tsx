@@ -4,11 +4,10 @@ import { buildOpenMessage, FeedEvent, FeedTypes } from "./OrderBookProps";
 import { ContractType } from "../../constants/enums/OrderBookContractTypes";
 import { useBookData } from "./hooks/useBookData";
 import { formatNumber } from "../../utils/formatNumber";
-import { AsksTable } from "./components/AsksTable";
-import { BidsTable } from "./components/BidsTable";
 import { ORDER_BOOK_WS_API_URL } from "../../constants/config";
 import styles from "./OrderBook.module.css";
 import { Button } from "../../components/Button";
+import { Table } from "./components/Table";
 
 const OrderBook = () => {
   const [isSubscribed, setSubscribed] = useState(false);
@@ -97,8 +96,7 @@ const OrderBook = () => {
         <span className={styles.spread}>
           Spread: {formatNumber(highestBid - lowestAsk)}
         </span>
-        <BidsTable bids={bids} highestTotal={highestTotal} />
-        <AsksTable asks={asks} highestTotal={highestTotal} />
+        <Table bids={bids} asks={asks} highestTotal={highestTotal} />
       </div>
     </div>
   );

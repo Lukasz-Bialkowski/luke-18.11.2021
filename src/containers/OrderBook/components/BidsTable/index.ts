@@ -1,1 +1,0 @@
-export { BidsTable } from "./BidsTable";

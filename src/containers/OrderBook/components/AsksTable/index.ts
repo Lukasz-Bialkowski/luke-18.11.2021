@@ -1,1 +1,0 @@
-export { AsksTable } from "./AsksTable";

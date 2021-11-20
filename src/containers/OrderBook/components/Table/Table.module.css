@@ -1,4 +1,4 @@
-.bids {
+.bids, .asks {
   display: grid;
   grid-auto-flow: row;
   grid-auto-rows: 25px;
@@ -14,22 +14,34 @@
   z-index: 1;
   text-align: right;
 }
+
 .header {
   text-transform: uppercase;
   text-align: right;
   font-weight: 600;
 }
+
 .gridRow {
   display: contents;
 }
+
 .gridRow:hover > .row {
   background-color: var(--bg-color-lighter);
   font-weight: 600;
 }
-.price {
-  color: var(--accent-colour);
+
+.bidsPrice {
+  color: var(--green);
 }
+
+.asksPrice {
+  color: var(--red);
+}
+
 @media only screen and (max-width: 650px) {
+  .asks {
+    order: 1;
+  }
   .bids {
     order: 3;
   }
