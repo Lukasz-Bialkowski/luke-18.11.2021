@@ -20,17 +20,16 @@ const useBookData = () => {
       }: { bids: [[number, number]]; asks: [[number, number]] } = jsonMessage;
 
       if (newAsks) {
-        for(let [key, value] of newAsks) {
+        for (let [key, value] of newAsks) {
           asksBusket.set(key, value);
         }
       }
 
       if (newBids) {
-        for(let [key, value] of newBids) {
+        for (let [key, value] of newBids) {
           bidsBusket.set(key, value);
         }
       }
-
     } catch (err) {
       console.log("Parsing error", err);
     }
@@ -69,11 +68,15 @@ const useBookData = () => {
 
     setLowestAsk(lowestPrice);
     setAsks(asksArr);
-    setHighestTotal(currentHighestTotal => (currentHighestTotal < highestTotal) ? highestTotal : currentHighestTotal);
+    setHighestTotal((currentHighestTotal) =>
+      currentHighestTotal < highestTotal ? highestTotal : currentHighestTotal
+    );
   };
 
   const prepareBidsForRender = () => {
-    const sortedBids = new Map([...bidsBusket].sort((a, b) => (a > b ? -1 : 1)));
+    const sortedBids = new Map(
+      [...bidsBusket].sort((a, b) => (a > b ? -1 : 1))
+    );
 
     const bidsArr: any = [];
     let highestPrice = -Infinity;
@@ -96,7 +99,9 @@ const useBookData = () => {
 
     setHighestBid(highestPrice);
     setBids(bidsArr);
-    setHighestTotal(currentHighestTotal => (currentHighestTotal < highestTotal) ? highestTotal : currentHighestTotal);
+    setHighestTotal((currentHighestTotal) =>
+      currentHighestTotal < highestTotal ? highestTotal : currentHighestTotal
+    );
   };
 
   const [throttledFunctionAsks] = useThrottle(prepareAsksForRender, 1000);

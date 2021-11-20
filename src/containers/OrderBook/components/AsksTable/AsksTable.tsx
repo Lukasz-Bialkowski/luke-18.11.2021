@@ -5,27 +5,20 @@ import { AsksTableProps } from "./AsksTableProps";
 
 const AsksTable = ({ asks, highestTotal }: AsksTableProps) => {
   return (
-    <table className={styles.asks}>
-      <thead>
-        <tr>
-          <th colSpan={3}>ASKS</th>
-        </tr>
-        <tr>
-          <th>PRICE</th>
-          <th>SIZE</th>
-          <th>TOTAL</th>
-        </tr>
-      </thead>
-      <tbody>
-        {asks.map(([price, size, total]) => (
-          <tr key={price}>
-            <td className={styles.price}>{formatNumber(price, { minimumFractionDigits: 2 })}</td>
-            <td>{formatNumber(size)}</td>
-            <td>{formatNumber(total)}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className={styles.asks}>
+      <span className={styles.header}>Price</span>
+      <span className={styles.header}>Size</span>
+      <span className={styles.header}>Total</span>
+      {asks.map(([price, size, total]) => (
+        <div key={price} className={styles.gridRow}>
+          <span className={[styles.row, styles.price].join(" ")}>
+            {formatNumber(price, { minimumFractionDigits: 2 })}
+          </span>
+          <span className={styles.row}>{formatNumber(size)}</span>
+          <span className={styles.row}>{formatNumber(total)}</span>
+        </div>
+      ))}
+    </div>
   );
 };
 

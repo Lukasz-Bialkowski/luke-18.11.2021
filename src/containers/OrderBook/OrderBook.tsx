@@ -8,6 +8,7 @@ import { AsksTable } from "./components/AsksTable";
 import { BidsTable } from "./components/BidsTable";
 import { ORDER_BOOK_WS_API_URL } from "../../constants/config";
 import styles from "./OrderBook.module.css";
+import { Button } from "../../components/Button";
 
 const OrderBook = () => {
   const [isSubscribed, setSubscribed] = useState(false);
@@ -85,18 +86,17 @@ const OrderBook = () => {
     <div className={styles.wrapper}>
       <h1>Order book ({contract})</h1>
       <div className={styles.topSection}>
-        <div className={styles.actionButtons}>
-          <button onClick={changeContract}>Toggle Feed</button>
-          <button disabled={isSubscribed} onClick={subscribe}>
-            Start updating
-          </button>
-          <button disabled={!isSubscribed} onClick={unsubscribe}>
-            Stop updating
-          </button>
-        </div>
-        <span>Spread: {formatNumber(highestBid - lowestAsk)}</span>
+        <Button text="Toggle Feed" onClick={changeContract} type="primary" />
+        <Button
+          text={isSubscribed ? "Stop" : "Start"}
+          onClick={isSubscribed ? unsubscribe : subscribe}
+          type="secondary"
+        />
       </div>
       <div className={styles.tableWrapper}>
+        <span className={styles.spread}>
+          Spread: {formatNumber(highestBid - lowestAsk)}
+        </span>
         <BidsTable bids={bids} highestTotal={highestTotal} />
         <AsksTable asks={asks} highestTotal={highestTotal} />
       </div>

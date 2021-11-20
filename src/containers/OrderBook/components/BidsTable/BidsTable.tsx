@@ -5,27 +5,20 @@ import { BidsTableProps } from "./BidsTableProps";
 
 const BidsTable = ({ bids, highestTotal }: BidsTableProps) => {
   return (
-    <table className={styles.bids}>
-      <thead>
-        <tr>
-          <th colSpan={3}>BIDS</th>
-        </tr>
-        <tr>
-          <th>TOTAL</th>
-          <th>SIZE</th>
-          <th>PRICE</th>
-        </tr>
-      </thead>
-      <tbody>
-        {bids.map(([price, size, total]) => (
-          <tr key={price}>
-            <td className={styles.bids}>{formatNumber(total)}</td>
-            <td>{formatNumber(size)}</td>
-            <td className={styles.price}>{formatNumber(price, { minimumFractionDigits: 2 })}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className={styles.bids}>
+      <span className={styles.header}>Total</span>
+      <span className={styles.header}>Size</span>
+      <span className={styles.header}>Price</span>
+      {bids.map(([price, size, total]) => (
+        <div key={price} className={styles.gridRow}>
+          <span className={styles.row}>{formatNumber(total)}</span>
+          <span className={styles.row}>{formatNumber(size)}</span>
+          <span className={[styles.row, styles.price].join(" ")}>
+            {formatNumber(price, { minimumFractionDigits: 2 })}
+          </span>
+        </div>
+      ))}
+    </div>
   );
 };
 

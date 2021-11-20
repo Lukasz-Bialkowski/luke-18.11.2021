@@ -1,7 +1,5 @@
-.orderBook {
-  width: 100%;
-  max-width: 800px;
-  margin: auto;
+.wrapper {
+  margin-bottom: 100px;
 }
 
 .topSection {
@@ -14,4 +12,31 @@
 .tableWrapper {
   display: flex;
   align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.spread {
+  font-weight: 600;
+  width: 100%;
+  text-align: right;
+  margin: 20px 0;
+}
+
+@media only screen and (max-width: 650px) {
+  .tableWrapper {
+    flex-direction: column;
+  }
+  .spread {
+    order: 2;
+  }
+  .topSection {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background-color: var(--bg-color);
+    padding: 20px 30px;
+    margin: 0;
+  }
 }

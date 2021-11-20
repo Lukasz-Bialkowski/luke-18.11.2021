@@ -1,6 +1,12 @@
 :root {
   --warn-colour: #ff5a6a;
   --accent-colour: #29baa5;
+  --primary-button-color: rgb(179, 91, 212);
+  --secondary-button-color: rgb(20, 112, 154);
+  --disabled-button-color: rgb(54, 133, 170);
+  --bg-color: rgb(16, 25, 29);
+  --bg-color-lighter: rgb(50, 50, 50);
+  --font-color: rgb(222, 222, 222);
   --typeface: "IBM Plex Sans",sans-serif;
 }
 
@@ -11,8 +17,8 @@ body, html {
 }
 
 body {
-  background-color: rgb(16, 25, 29);
-  color: white;
+  background-color: var(--bg-color);
+  color: var(--font-color);
   font-family: var(--typeface);
 }
 
