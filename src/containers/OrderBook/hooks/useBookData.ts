@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useThrottle } from "rooks";
 import { ORDER_BOOK_REFRESH_TIMEOUT } from "../../../constants/config";
+import { useViewport } from "./useViewport";
 
 const asksBusket = new Map<number, Array<number> | number>();
 const bidsBusket = new Map<number, Array<number> | number>();
@@ -11,6 +12,7 @@ const useBookData = () => {
   const [highestBid, setHighestBid] = useState(0);
   const [lowestAsk, setLowestAsk] = useState(0);
   const [highestTotal, setHighestTotal] = useState(0);
+  const { isMobile } = useViewport();
 
   const parseData = useCallback((message: any) => {
     try {
@@ -68,7 +70,7 @@ const useBookData = () => {
     }
 
     setLowestAsk(lowestPrice);
-    setAsks(asksArr);
+    setAsks(isMobile ? asksArr.reverse() : asksArr);
     setHighestTotal((currentHighestTotal) =>
       currentHighestTotal < highestTotal ? highestTotal : currentHighestTotal
     );
@@ -105,8 +107,14 @@ const useBookData = () => {
     );
   };
 
-  const [throttledFunctionAsks] = useThrottle(prepareAsksForRender, ORDER_BOOK_REFRESH_TIMEOUT);
-  const [throttledFunctionBids] = useThrottle(prepareBidsForRender, ORDER_BOOK_REFRESH_TIMEOUT);
+  const [throttledFunctionAsks] = useThrottle(
+    prepareAsksForRender,
+    ORDER_BOOK_REFRESH_TIMEOUT
+  );
+  const [throttledFunctionBids] = useThrottle(
+    prepareBidsForRender,
+    ORDER_BOOK_REFRESH_TIMEOUT
+  );
 
   useEffect(() => {
     throttledFunctionAsks();

@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState, useRef } from "react";
 import { buildOpenMessage, FeedEvent, FeedTypes } from "./OrderBookProps";
 import { ContractType } from "../../constants/enums/OrderBookContractTypes";
 import { useBookData } from "./hooks/useBookData";
-import { formatNumber } from "../../utils/formatNumber";
 import { ORDER_BOOK_WS_API_URL } from "../../constants/config";
 import styles from "./OrderBook.module.css";
 import { Button } from "../../components/Button";
@@ -92,12 +91,13 @@ const OrderBook = () => {
           type="secondary"
         />
       </div>
-      <div className={styles.tableWrapper}>
-        <span className={styles.spread}>
-          Spread: {formatNumber(highestBid - lowestAsk)}
-        </span>
-        <Table bids={bids} asks={asks} highestTotal={highestTotal} />
-      </div>
+      <Table
+        bids={bids}
+        asks={asks}
+        highestBid={highestBid}
+        lowestAsk={lowestAsk}
+        highestTotal={highestTotal}
+      />
     </div>
   );
 };

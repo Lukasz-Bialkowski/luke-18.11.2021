@@ -28,6 +28,7 @@
   }
   .spread {
     order: 2;
+    text-align: center;
   }
   .topSection {
     position: fixed;
